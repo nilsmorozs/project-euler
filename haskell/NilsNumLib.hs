@@ -30,6 +30,15 @@ primesUpTo maxNum = sieve [2..maxNum]
              sieve (x:xs) = x : sieve [sxs | sxs <- xs, not (elem sxs [x, x+x..maxNum])]
              sieve []     = []
              
+-- Define function that creates a list with a specified number of primes (quite slow, should be a better way)
+primes :: Integral a => Int -> a -> [a] -> [a]
+primes numPrimes nextNum [] = primes numPrimes 3 [2]
+primes numPrimes nextNum x
+                   | ((length x) == numPrimes) = x
+                   | otherwise = if (isPrime nextNum)
+                                 then primes numPrimes (nextNum+1) (nextNum:x)
+                                 else primes numPrimes (nextNum+1) x
+             
 -- Define function that checks if the input number is a prime
 isPrime :: Integral a => a -> Bool
 isPrime 1 = False

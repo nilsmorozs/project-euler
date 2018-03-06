@@ -4,6 +4,7 @@ import NilsNumLib
 
 -- Define a function that factorises the number recursively using unique factors only 
 -- (except when there is no choice for the last factor)
+-- Function 'minFactor' is included in "NilsNumLib.hs"
 factoriseUnique :: Integral a => a -> [a] -> [a]
 factoriseUnique num [] = factoriseUnique num [minFactor num 2]
 factoriseUnique num x
