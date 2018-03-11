@@ -7,16 +7,11 @@ isDivisibleBy n m = if ((mod n m) == 0) then True else False
 
 -- Function that finds the smallest factor in a number recursively, starting search from 'n'
 minFactor :: Integral a => a -> a -> a
-minFactor num n =  if num `isDivisibleBy` n
-                            then n
-                            else minFactor num (n+1)
-                                     
--- Function that factorises the number recursively starting from a set 'x' (leave empty [])
---factorise :: Integral a => a -> [a] -> [a]
---factorise num [] = factorise num [minFactor num 2]
---factorise num x  = if (product x) == num
---                          then x
---                          else factorise num ((minFactor (quot num (product x)) (head x)) : x)
+minFactor num n 
+     | (n*n > num) = num  
+     | otherwise = if num `isDivisibleBy` n
+                   then n
+                   else minFactor num (n+1)
                            
 -- Function that factorises the number
 factorise :: Integral a => a -> [a]
@@ -32,12 +27,9 @@ findFactors num x  = if (head x) == num
                            then x
                            else findFactors num $ (minFactor num ((head x)+1)) : x
               
--- Function that generates primes up to a certain number using the (wrong version of, as it turns out) Sieve of Eratosthenes
-primesUpTo :: Int -> [Int]
-primesUpTo maxNum = 2 : sieve [3, 5.. maxNum]
-             where
-             sieve (x:xs) = x : sieve (filter ((/= 0) . (`mod` x)) xs)
-             sieve []     = []
+-- Function that generates primes up to a certain number using simple trial division
+primesUpTo :: Integral a => a -> [a]
+primesUpTo maxNum = 2 : filter isPrime [3, 5.. maxNum]
              
 -- Function that checks if the input number is a prime
 isPrime :: Integral a => a -> Bool
