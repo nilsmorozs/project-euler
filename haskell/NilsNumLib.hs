@@ -1,5 +1,7 @@
 module NilsNumLib where
 
+import Data.List
+
 -- Function that checks if n is disible by m
 isDivisibleBy n m = if ((mod n m) == 0) then True else False 
 
@@ -28,13 +30,13 @@ findFactors :: Integral a => a -> [a] -> [a]
 findFactors num [] = findFactors num [1]
 findFactors num x  = if (head x) == num
                            then x
-                           else findFactors num ((minFactor num ((head x)+1)) : x)
+                           else findFactors num $ (minFactor num ((head x)+1)) : x
               
--- Function that generates primes up to a certain number using the Sieve of Eratosthenes
-primesUpTo :: Integral a => a -> [a]
-primesUpTo maxNum = sieve [2..maxNum]
+-- Function that generates primes up to a certain number using the (wrong version of, as it turns out) Sieve of Eratosthenes
+primesUpTo :: Int -> [Int]
+primesUpTo maxNum = 2 : sieve [3, 5.. maxNum]
              where
-             sieve (x:xs) = x : sieve [sxs | sxs <- xs, not (elem sxs [x, x+x..maxNum])]
+             sieve (x:xs) = x : sieve (filter ((/= 0) . (`mod` x)) xs)
              sieve []     = []
              
 -- Function that checks if the input number is a prime
@@ -53,7 +55,7 @@ primes :: Integral a => Int -> [a] -> [a]
 primes numPrimes [] = primes numPrimes [2]
 primes numPrimes x
              | (length x) == numPrimes = x
-             | otherwise = primes numPrimes (nextPrime (head x) : x)
+             | otherwise = primes numPrimes $ nextPrime (head x) : x
 
 -- Function that generates Fibonacci numbers up to a maximum number
 fibonacci :: (Integral a, Ord a) => [a] -> a -> [a]
